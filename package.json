@@ -1,0 +1,46 @@
+{
+  "name": "mcp-2d-plotter",
+  "private": true,
+  "version": "1.0.0",
+  "description": "In-browser 3D simulation of a CoreXY 2D plotter. Load G-code, SVG, or images and watch it draw with real-time stepper motor signal analysis and synthesized audio.",
+  "keywords": [
+    "corexy",
+    "plotter",
+    "gcode",
+    "cnc",
+    "3d-simulation",
+    "react-three-fiber",
+    "threejs",
+    "halftone",
+    "svg",
+    "web-audio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "three": "^0.185.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.185.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "oxlint": "^1.69.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0"
+  }
+}
