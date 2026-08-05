@@ -2,7 +2,7 @@
 
 An in-browser, real-time **3D simulation of a CoreXY 2D plotter**. Load G-code, SVG line art, or raster images — then watch the pen draw on a virtual paper bed while a digital logic analyzer shows live STEP/DIR stepper signals and a synthesizer plays the motor sounds.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbetterthanyou155%2Fmcp-2d-plotter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdivyanshchandhok%2Fmcp-2d-plotter)
 
 ![CoreXY Plotter Simulator](docs/screenshot.png)
 

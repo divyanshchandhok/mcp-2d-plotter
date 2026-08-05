@@ -16,6 +16,10 @@
     "web-audio"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/divyanshchandhok/mcp-2d-plotter.git"
+  },
   "type": "module",
   "engines": {
     "node": ">=20.19.0"
