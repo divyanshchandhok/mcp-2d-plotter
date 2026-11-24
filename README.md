@@ -43,6 +43,27 @@ npm run lint       # oxlint
 3. **Play**: hit **Start Simulation** — the pen draws, the graphs trace step rates, and the audio follows the motors. Use the scrubber to jump anywhere in the job; everything stays in sync.
 4. **Tune it**: adjust steps/mm, acceleration, feedrate, and bed size in the settings drawer. Choose ink color, toggle CMYK for images, or switch on *Showcase Art* for a gallery-style view of the finished drawing.
 
+## Plot on a Real Plotter (MakerQ EasyDraw / AxiDraw-compatible)
+
+The **✎ Real Plotter** button (top right of the 3D view) sends the loaded drawing to a real EasyDraw through the small
+bridge in [makerq-easydrawv3](https://github.com/divyanshchandhok/makerq-easydrawv3) (`machine/bridge.py`). The bridge
+runs on the computer the plotter is plugged into (macOS, Linux or Windows).
+
+1. On the plotter computer, run `.venv/bin/python machine/bridge.py`. Note the pairing code it prints.
+2. In the simulator, enter the bridge URL (`http://localhost:8787`, or `http://<plotter-pc>:8787` from another computer)
+   and the pairing code.
+3. Load something, check the extent fits the 300 × 218 mm travel (shrink the bed in Settings if not), then **Plot it**.
+   Confirm the safety checklist and the pen starts moving. The 3D view follows the real machine, and Pause / Resume / Stop
+   work from the panel.
+
+Mapping: the simulated bed's top-left corner sits on the plotter's home corner (offsets shift the drawing). CMYK image
+jobs can be plotted one color pass at a time, swapping pens between passes. **Export SVG** writes a plotter-ready mm SVG
+for `easydraw.py plot` when you'd rather plot offline.
+
+The browser only allows plain-HTTP calls to a LAN address from an `http://` page. Use `npm run dev` (add `-- --host` to reach it
+from other machines) or run the simulator on the plotter computer itself. Works in Chrome, Firefox and Safari on Linux,
+macOS and Windows.
+
 ## How It Works
 
 1. **Parse** — G-code / SVG / images are converted into a list of moves (`start`, `end`, `feedrate`, `penDown`).
@@ -73,6 +94,7 @@ src/
 ├── scene/      # 3D visualization (react-three-fiber): frame, pen carriage, paper
 ├── motor/      # Step-rate graphs, logic analyzer, digital readouts
 ├── components/ # UI: G-code input, playback controls, settings panel
+├── plotter/    # Real-plotter link: job builder, SVG export, EasyDraw bridge client + panel
 └── App.tsx     # Dashboard integration
 public/
 ├── image-compiler.worker.js   # Off-main-thread halftone image → G-code

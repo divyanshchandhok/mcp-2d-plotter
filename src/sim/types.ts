@@ -88,6 +88,8 @@ export interface SimulationData {
   moveCount: number;
   /** Bounding box of the drawing path in mm */
   bounds: { minX: number; maxX: number; minY: number; maxY: number };
+  /** Tape time (s) at which each parsed move ends, indexed like the parser's Move[] */
+  moveEndT?: Float64Array;
 }
 
 /** Default simulation config */

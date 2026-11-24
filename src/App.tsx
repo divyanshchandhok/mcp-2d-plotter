@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { loadGcode, createMockTape } from './sim';
+import { useState, useCallback, useMemo } from 'react';
+import { loadGcode, createMockTape, parseGcode } from './sim';
 import type { SimulationData, SimConfig } from './sim/types';
 import { DEFAULT_CONFIG } from './sim/types';
 import { useSimulationClock } from './clock/useSimulationClock';
@@ -9,6 +9,7 @@ import { MotorGraphs } from './motor';
 import { Controls } from './components/Controls';
 import { GcodeInput } from './components/GcodeInput';
 import { SettingsPanel } from './components/SettingsPanel';
+import { RealPlotterPanel } from './plotter/RealPlotterPanel';
 
 export default function App() {
   const [config, setConfig] = useState<SimConfig>(DEFAULT_CONFIG);
@@ -25,6 +26,16 @@ export default function App() {
   const [leftPanelState, setLeftPanelState] = useState<'minimized' | 'normal' | 'maximized'>('normal');
   const [rightPanelState, setRightPanelState] = useState<'minimized' | 'normal' | 'maximized'>('normal');
   const [showSettings, setShowSettings] = useState(false);
+  const [showPlotter, setShowPlotter] = useState(false);
+
+  // Parsed moves of the loaded job, only needed by the Real Plotter panel.
+  // Re-parsed with the tape's own config so move indices match simData.moveEndT.
+  const plotMoves = useMemo(
+    () => (showPlotter && gcodeText && fileName !== 'mock-tape' && simData.moveEndT
+      ? parseGcode(gcodeText, simData.config)
+      : null),
+    [showPlotter, gcodeText, fileName, simData],
+  );
 
   const clock = useSimulationClock(simData.duration);
   const { soundEnabled, toggleSound } = useStepperSound(simData, clock);
@@ -224,6 +235,27 @@ export default function App() {
             Steps/mm: <span className="badge-value">{simData.config.stepsPerMm}</span>
           </div>
         </div>
+
+        <button
+          className={`real-plotter-toggle ${showPlotter ? 'active' : ''}`}
+          onClick={() => {
+            setShowPlotter(!showPlotter);
+            setShowSettings(false);
+          }}
+          title="Send this drawing to a real EasyDraw plotter"
+        >
+          ✎ Real Plotter
+        </button>
+
+        {showPlotter && !showSettings && (
+          <RealPlotterPanel
+            simData={simData}
+            moves={plotMoves}
+            clock={clock}
+            fileName={fileName}
+            onClose={() => setShowPlotter(false)}
+          />
+        )}
 
         {/* Dynamic Settings Panel Drawer */}
         {showSettings && (

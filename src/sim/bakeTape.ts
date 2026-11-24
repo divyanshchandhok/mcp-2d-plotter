@@ -62,8 +62,10 @@ export function bakeTape(moves: Move[], config: SimConfig): SimulationData {
   let maxY = curY;
 
   let moveCount = 0;
+  const moveEndT = new Float64Array(moves.length);
 
-  for (const move of moves) {
+  for (let mi = 0; mi < moves.length; mi++) {
+    const move = moves[mi];
     // Update bounds with end position
     const sx = move.start.x;
     const sy = move.start.y;
@@ -76,7 +78,10 @@ export function bakeTape(moves: Move[], config: SimConfig): SimulationData {
     maxY = Math.max(maxY, sy, ey);
 
     const profile = planSegment(move, config);
-    if (profile.dist < 1e-9) continue;
+    if (profile.dist < 1e-9) {
+      moveEndT[mi] = t;
+      continue;
+    }
 
     moveCount++;
 
@@ -142,6 +147,7 @@ export function bakeTape(moves: Move[], config: SimConfig): SimulationData {
 
     curX = ex;
     curY = ey;
+    moveEndT[mi] = t;
   }
 
   return {
@@ -151,5 +157,6 @@ export function bakeTape(moves: Move[], config: SimConfig): SimulationData {
     config,
     moveCount,
     bounds: { minX, maxX, minY, maxY },
+    moveEndT,
   };
 }
